@@ -301,4 +301,24 @@ function cleanr_theme_comment($comment, $args, $depth) {
       </div>
      </div>
      </div>
-<?php } ?>
+<?php }
+
+add_action( 'wp_enqueue_scripts', 'addScriptsAndStyles' );
+
+function addScriptsAndStyles()
+{
+    // ==============================================================
+    // Scripts
+    // ==============================================================
+    wp_enqueue_script('main', get_template_directory_uri().'/js/main.js' );
+    // ==============================================================
+    // Localize
+    // ==============================================================
+    wp_localize_script('main', 'defaults', array('ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+}
+
+require_once 'includes/Search.php';
+
+$search = new Search();
+
+
