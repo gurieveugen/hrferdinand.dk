@@ -3,6 +3,16 @@ jQuery(document).ready(function(){
 		var search = new Search(jQuery(this));
 		search.keyup();
 	});
+
+	jQuery(document).click(function(e){
+		if(!jQuery(e.target).closest('.list-search-results').length) 
+		{
+	        if(jQuery('ul.list-search-results').is(":visible")) 
+	        {
+	            jQuery('ul.list-search-results').hide()
+	        }
+	    }  
+	});
 });
 
 function Search(input){
@@ -15,7 +25,7 @@ function Search(input){
 	$this.keyup = function(){
 		clearTimeout($this.input.data('timer'));
 		$this.input.data(
-			'time', 
+			'timer', 
 			setTimeout(function(){ $this.load() }, $this.delay)
 		);
 	};
@@ -57,6 +67,7 @@ function Search(input){
 				$this.container.append($this.getPostHTML(result.posts[i]));
 			}
 		}
+		$this.container.show();
 	};
 
 	$this.getPostHTML = function(el){
