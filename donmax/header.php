@@ -9,7 +9,7 @@
     <meta name="robots" content="noodp" />
 
 <!-- CSS -->
-    <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css" media="screen, projection" />
 	
 <!-- JAVASCRIPT -->
     <script type="text/javascript" src="<?php bloginfo('stylesheet_directory'); ?>/javascripts/jquery-1.7.min.js"></script>
@@ -35,7 +35,8 @@
 
 
 <form class="search" method="get" action="<?php bloginfo('home'); ?>">
-	<input type="text" name="s" id="s"  class="text" value="" />
+					<input type="text" name="s" id="s"  class="text" value="" />
+					<input type="submit" class="submit" value="Sog" />
 </form>
 
 

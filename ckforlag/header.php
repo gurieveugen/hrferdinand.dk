@@ -35,7 +35,8 @@
 
 
 <form class="search" method="get" action="<?php bloginfo('home'); ?>">
-	<input type="text" name="s" id="s"  class="text" value="" />
+					<input type="text" name="s" id="s"  class="text" value="" />
+					<input type="submit" class="submit" value="Sog" />
 </form>
 
 
