@@ -5,8 +5,21 @@ Template Name: Books
 ?>
 
 <?php get_header(); ?>
+<?php 
 
-<?php $page = (get_query_var('page')) ? get_query_var('page') : 1; query_posts('post_type=boger&posts_per_page=5&cat=-12&paged='.$paged); ?>
+
+$page = (get_query_var('page')) ? get_query_var('page') : 1; 
+query_posts(
+	array(
+		'post_type'      => 'boger',
+		'posts_per_page' => 5,
+		'cat'            => '-12',
+		'paged'          => $paged,
+		'orderby'        => 'title',
+		'order'          => 'ASC',
+	)
+);
+?>
 
 <?php $a=1; while (have_posts()) : the_post(); ?>
 	<div class="item <?php if ( $a == 2 ) { echo ' alt'; $a=0; } ?>">

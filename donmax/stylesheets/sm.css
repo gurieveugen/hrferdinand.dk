@@ -1,0 +1,83 @@
+#pageContent .contentCol{
+	float: none;
+	width: 100%;
+	margin: 0 0 24px;
+}
+#pageContent .contentCol .item{
+	width: 100%;
+}
+#pageContent .contentCol .item .content{
+	width: 510px;
+}
+#pageContent .contentCol .pageItem .text{
+	padding: 20px;
+}
+#pageContent .sideCol{
+	margin: 0 auto;
+	float: none;
+}
+.btn-menu{
+	display: block;
+	margin: 4px 0 0;
+	width: 30px;
+	height: 30px;
+	background: url(images/btn-menu.png) no-repeat;
+	text-indent: -9999px;
+	overflow: hidden;
+}
+#top-nav{
+	position: absolute;
+	left: 15px;
+	top: 40px;
+	background: #771717;
+	min-width: 150px;
+	max-width: 100%;
+	z-index: 100;
+	display: none;
+}
+#top-nav li{
+	float: none;
+	margin: 0;
+	line-height: 20px;
+	border-top: 1px solid #fff;
+}
+#top-nav li:first-child{
+	border: none;
+}
+#top-nav a{
+	display: block;
+	padding: 5px 10px;
+}
+#top-nav a:hover,
+#top-nav .active a{
+	background: #681414;
+}
+#top-nav.open{
+	display: block;
+}
+#top-nav ul,
+#top-nav ul{
+	position: relative;
+	left: 0;
+	top: 0;
+	padding: 0;
+}
+#top-nav ul li{
+	float: none;
+	margin: 0;
+}
+.pageHeader.down{
+	margin-top: 0;
+}
+#mc_embed_signup form{
+	padding: 10px 0 0 !important;
+}
+@media (min-width:767px){
+	.page-template-subbooks-php .list_of_book ul li{
+		width: 31%;
+		margin: 0 1.5% 1.5% 0;
+	}
+	.page-template-subbooks-php .about_book{
+		width: 127px;
+	}
+}

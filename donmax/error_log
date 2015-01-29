@@ -1,0 +1,3 @@
+[27-Jan-2015 00:07:58 America/Los_Angeles] PHP Fatal error:  Call to undefined function get_header() in /home/miydim3/public_html/wp7/wp-content/themes/donmax/index.php on line 1
+[29-Jan-2015 04:01:21 America/Los_Angeles] PHP Fatal error:  Call to undefined function get_header() in /home/miydim3/public_html/wp7/wp-content/themes/donmax/index.php on line 1
+[29-Jan-2015 04:01:35 America/Los_Angeles] PHP Fatal error:  Call to undefined function get_header() in /home/miydim3/public_html/wp7/wp-content/themes/donmax/index.php on line 1

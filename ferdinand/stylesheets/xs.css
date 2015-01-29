@@ -1,0 +1,12 @@
+#pageContent .contentCol .item{
+	height: auto;
+}
+#pageContent .contentCol .item .image{
+	float: none;
+	margin: 0 auto 5px;
+}
+#pageContent .contentCol .item .content{
+	float: none;
+	width: 100%;
+	margin: 0 auto;
+}
