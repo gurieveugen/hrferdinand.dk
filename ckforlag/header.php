@@ -74,8 +74,7 @@
 
 
 <form class="search" method="get" action="<?php bloginfo('home'); ?>">
-
-	<input type="text" name="s" id="s"  class="text" value="" />
+	<input type="text" name="s" id="s"  class="text" value="" autocomplete="off" />
 	<input type="submit" class="submit" value="søg" />
 	<ul class="list-search-results"></ul>
 	<img src="<?php bloginfo('stylesheet_directory'); ?>/stylesheets/images/ajax-loader.gif" alt="" class="loader">

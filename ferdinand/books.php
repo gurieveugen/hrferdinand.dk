@@ -7,6 +7,9 @@ Template Name: Books
 <?php get_header(); ?>
 <?php 
 
+$filter = new Filter($_GET);
+$posts = $filter->getPosts();
+
 
 $page = (get_query_var('page')) ? get_query_var('page') : 1; 
 query_posts(

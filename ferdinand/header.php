@@ -98,22 +98,22 @@ if($rows[$i]['image'] != "")
 		<ul class="filter-cat">
 			<li>Vis titler:</li>
 			<li>
-				<a href="#">A - E</a>
+				<a href="<?php echo add_query_arg( array('letter_start' => 'A', 'letter_end' => 'E') ); ?>">A - E</a>
 			</li>
 			<li>
-				<a href="#">F - J</a>
+				<a href="<?php echo add_query_arg( array('letter_start' => 'F', 'letter_end' => 'J') ); ?>">F - J</a>
 			</li>
 			<li>
-				<a href="#">K - Q</a>
+				<a href="<?php echo add_query_arg( array('letter_start' => 'K', 'letter_end' => 'Q') ); ?>">K - Q</a>
 			</li>
 			<li>
-				<a href="#">P - T</a>
+				<a href="<?php echo add_query_arg( array('letter_start' => 'P', 'letter_end' => 'T') ); ?>">P - T</a>
 			</li>
 			<li>
-				<a href="#">U - X</a>
+				<a href="<?php echo add_query_arg( array('letter_start' => 'U', 'letter_end' => 'X') ); ?>">U - X</a>
 			</li>
 			<li>
-				<a href="#">Y - A</a>
+				<a href="<?php echo add_query_arg( array('letter_start' => 'Y', 'letter_end' => 'A') ); ?>">Y - A</a>
 			</li>
 		</ul>
 	</div>

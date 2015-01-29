@@ -318,7 +318,7 @@ function addScriptsAndStyles()
 }
 
 require_once 'includes/Search.php';
+require_once 'includes/Filter.php';
 
 $search = new Search();
-
 
