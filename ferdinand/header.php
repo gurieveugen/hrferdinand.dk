@@ -98,22 +98,22 @@ if($rows[$i]['image'] != "")
 		<ul class="filter-cat">
 			<li>Vis titler:</li>
 			<li>
-				<a href="<?php echo add_query_arg( array('letter_start' => 'A', 'letter_end' => 'E') ); ?>">A - E</a>
+				<a href="<?php echo add_query_arg('letters', 'AE'); ?>">A - E</a>
 			</li>
 			<li>
-				<a href="<?php echo add_query_arg( array('letter_start' => 'F', 'letter_end' => 'J') ); ?>">F - J</a>
+				<a href="<?php echo add_query_arg('letters', 'FJ'); ?>">F - J</a>
 			</li>
 			<li>
-				<a href="<?php echo add_query_arg( array('letter_start' => 'K', 'letter_end' => 'Q') ); ?>">K - Q</a>
+				<a href="<?php echo add_query_arg('letters', 'KQ'); ?>">K - Q</a>
 			</li>
 			<li>
-				<a href="<?php echo add_query_arg( array('letter_start' => 'P', 'letter_end' => 'T') ); ?>">P - T</a>
+				<a href="<?php echo add_query_arg('letters', 'PT'); ?>">P - T</a>
 			</li>
 			<li>
-				<a href="<?php echo add_query_arg( array('letter_start' => 'U', 'letter_end' => 'X') ); ?>">U - X</a>
+				<a href="<?php echo add_query_arg('letters', 'UX'); ?>">U - X</a>
 			</li>
 			<li>
-				<a href="<?php echo add_query_arg( array('letter_start' => 'Y', 'letter_end' => 'A') ); ?>">Y - A</a>
+				<a href="<?php echo add_query_arg('letters', 'YA'); ?>">Y - A</a>
 			</li>
 		</ul>
 	</div>
