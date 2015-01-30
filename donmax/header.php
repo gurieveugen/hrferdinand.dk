@@ -179,22 +179,22 @@ $i = rand(0, $row_count - 1);
 		<ul class="filter-cat">
 			<li>Vis titler:</li>
 			<li>
-				<a href="#">A - E</a>
+				<a href="<?php echo add_query_arg('letters', 'AE'); ?>">A - E</a>
 			</li>
 			<li>
-				<a href="#">F - J</a>
+				<a href="<?php echo add_query_arg('letters', 'FJ'); ?>">F - J</a>
 			</li>
 			<li>
-				<a href="#">K - Q</a>
+				<a href="<?php echo add_query_arg('letters', 'KQ'); ?>">K - Q</a>
 			</li>
 			<li>
-				<a href="#">P - T</a>
+				<a href="<?php echo add_query_arg('letters', 'PT'); ?>">P - T</a>
 			</li>
 			<li>
-				<a href="#">U - X</a>
+				<a href="<?php echo add_query_arg('letters', 'UX'); ?>">U - X</a>
 			</li>
 			<li>
-				<a href="#">Y - A</a>
+				<a href="<?php echo add_query_arg('letters', 'YA'); ?>">Y - A</a>
 			</li>
 		</ul>
 

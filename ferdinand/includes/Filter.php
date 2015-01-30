@@ -26,11 +26,11 @@ class Filter{
 		$this->letters = $this->getLetters($response['letters']);
 
 		$this->query = array(
-			'SELECT'   => sprintf('SELECT * FROM wp_posts'),
+			'SELECT'   => sprintf('SELECT SQL_CALC_FOUND_ROWS * FROM wp_posts'),
 			'WHERE'    => 'WHERE 1=1 AND ( wp_posts.ID NOT IN (SELECT object_id FROM wp_term_relationships WHERE term_taxonomy_id IN (12) ) ) AND wp_posts.post_type = \'boger\' AND (wp_posts.post_status = \'publish\')',
 			'LIKE'     => '',
 			'GROUP_BY' => 'GROUP BY wp_posts.ID',
-			'ORDER_BY' => $this->getOrderBy
+			'ORDER_BY' => $this->getOrderBy()
 		);
 	}	
 
@@ -60,13 +60,24 @@ class Filter{
 		return $posts;
 	}
 
+	public function getCount()
+	{
+		return $this->db->get_var('SELECT FOUND_ROWS()');
+	}
+
+	public function getTotal()
+	{
+		$total = ceil((int) $this->getCount()/ (int) get_option('posts_per_page' ));
+		return max(1, $total);
+	}
+
 	public function getQueryString()
 	{
 		if(count($this->letters))
 		{
 			foreach ($this->letters as $l) 
 			{
-				$like[] = $this->db->posts.'.post_title LIKE \''.$this->letter_start.'%\'';
+				$like[] = $this->db->posts.'.post_title LIKE \''.$l.'%\'';
 			}
 			$this->query['LIKE'] = sprintf('AND (%s)', implode(' OR ', $like));
 		}
@@ -77,7 +88,7 @@ class Filter{
 	 * Set letters
 	 * @param string $letters --- letters key
 	 */
-	public function getLetter($key)
+	public function getLetters($key)
 	{
 		$dic = $this->getDictionary();
 		if(isset($dic[$key]))
@@ -87,9 +98,30 @@ class Filter{
 		return array();
 	}
 
+	public function getPagination()
+	{
+		$big = 999999999;
+		$total = $this->getTotal();
+
+		$page_links = paginate_links( 
+			array(
+				'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+				'format'  => '?paged=%#%',
+				'current' => max( 1, get_query_var('paged') ),
+				'total'   => $total,
+				'type'    => 'array'
+			) 
+		);
+		if(!count($page_links)) return '';
+		$r = "<div class=\"navigation\"><ol class=\"wp-paginate\">\n\t<li>";
+		$r.= join("</li>\n\t<li>", $page_links);
+		$r.= "</li>\n</ol>\n</div>\n";
+		return $r;
+	}
+
 	public function getPage()
 	{
-		return (get_query_var('page')) ? get_query_var('page') : 1; 
+		return ( get_query_var( 'paged' ) ) ? absint( get_query_var( 'paged' ) ) : 1;
 	}
 
 	public function getDictionary()

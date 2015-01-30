@@ -8,8 +8,7 @@ class Filter{
 	//   / /_/ / /  / /_/ / /_/ /  __/ /  / /_/ /  __(__  ) 
 	//  / .___/_/   \____/ .___/\___/_/   \__/_/\___/____/  
 	// /_/              /_/                                 
-	private $letter_start;
-	private $letter_end;
+	private $letters;
 	private $query;
 	private $db;
 
@@ -23,27 +22,33 @@ class Filter{
 	{
 		global $wpdb;
 		$this->db = $wpdb;
-		$response = array_merge(
-			array(
-				'letter_start' => '',
-				'letter_end'   => ''
-			), 
-			$response
-		);
+		$response = array_merge(array('letters' => ''), $response);
+		$this->letters = $this->getLetters($response['letters']);
 
-		$this->setLetterStart($response['letter_start']);
-		$this->setLetterEnd($response['letter_end']);
 		$this->query = array(
-			'SELECT'   => sprintf('SELECT * FROM wp_posts'),
+			'SELECT'   => sprintf('SELECT SQL_CALC_FOUND_ROWS * FROM wp_posts'),
 			'WHERE'    => 'WHERE 1=1 AND ( wp_posts.ID NOT IN (SELECT object_id FROM wp_term_relationships WHERE term_taxonomy_id IN (12) ) ) AND wp_posts.post_type = \'boger\' AND (wp_posts.post_status = \'publish\')',
 			'LIKE'     => '',
 			'GROUP_BY' => 'GROUP BY wp_posts.ID',
-			'ORDER_BY' => 'ORDER BY wp_posts.post_title ASC LIMIT 0, 5'
+			'ORDER_BY' => $this->getOrderBy()
 		);
 	}	
 
+	public function getOrderBy()
+	{
+		$offset = ($this->getPage()-1)*(int) get_option('posts_per_page');
+		return sprintf('ORDER BY wp_posts.post_title ASC LIMIT %d, 5', $offset);
+	}
+
 	public function getPosts()
 	{
+		if(isset($_GET['debug']))
+		{
+			echo '<pre>';
+			var_dump($this->getQueryString());
+			echo '</pre>';
+		}
+
 		$posts = (array) $this->db->get_results($this->getQueryString());
 		if(count($posts))
 		{
@@ -55,41 +60,79 @@ class Filter{
 		return $posts;
 	}
 
+	public function getCount()
+	{
+		return $this->db->get_var('SELECT FOUND_ROWS()');
+	}
+
+	public function getTotal()
+	{
+		$total = ceil((int) $this->getCount()/ (int) get_option('posts_per_page' ));
+		return max(1, $total);
+	}
+
 	public function getQueryString()
 	{
-		if(strlen($this->letter_start) && strlen($this->letter_end))
+		if(count($this->letters))
 		{
-			$this->query['LIKE'] .= 'AND ('.$this->db->posts.'.post_title LIKE \''.$this->letter_start.'%\'';
-			$this->query['LIKE'] .= ' OR '.$this->db->posts.'.post_title LIKE \'%'.$this->letter_end.'\')';
+			foreach ($this->letters as $l) 
+			{
+				$like[] = $this->db->posts.'.post_title LIKE \''.$l.'%\'';
+			}
+			$this->query['LIKE'] = sprintf('AND (%s)', implode(' OR ', $like));
 		}
 		return implode(' ', $this->query);
 	}
 
 	/**
-	 * Set letter start
-	 * @param string $letter --- letter to set
+	 * Set letters
+	 * @param string $letters --- letters key
 	 */
-	public function setLetterStart($letter)
+	public function getLetters($key)
 	{
-		
-		$allow_letters = array('', 'A', 'F', 'K', 'P', 'U', 'Y');
-		if(in_array($letter, $allow_letters)) $this->letter_start = $letter;
-		else $this->letter_start = $allow_letters[0];
+		$dic = $this->getDictionary();
+		if(isset($dic[$key]))
+		{
+			return $dic[$key];	
+		}
+		return array();
 	}
 
-	/**
-	 * Set letter end
-	 * @param string $letter --- letter to set
-	 */
-	public function setLetterEnd($letter)
+	public function getPagination()
 	{
-		$allow_letters = array('', 'E', 'J', 'Q', 'T', 'X', 'A');
-		if(in_array($letter, $allow_letters)) $this->letter_end = $letter;
-		else $this->letter_end = $allow_letters[0];
+		$big = 999999999;
+		$total = $this->getTotal();
+
+		$page_links = paginate_links( 
+			array(
+				'base'    => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+				'format'  => '?paged=%#%',
+				'current' => max( 1, get_query_var('paged') ),
+				'total'   => $total,
+				'type'    => 'array'
+			) 
+		);
+		if(!count($page_links)) return '';
+		$r = "<div class=\"navigation\"><ol class=\"wp-paginate\">\n\t<li>";
+		$r.= join("</li>\n\t<li>", $page_links);
+		$r.= "</li>\n</ol>\n</div>\n";
+		return $r;
 	}
 
 	public function getPage()
 	{
-		return (get_query_var('page')) ? get_query_var('page') : 1; 
+		return ( get_query_var( 'paged' ) ) ? absint( get_query_var( 'paged' ) ) : 1;
+	}
+
+	public function getDictionary()
+	{
+		return array(
+			'AE' => array('A', 'B', 'C', 'D', 'E'),
+			'FJ' => array('F', 'G', 'H', 'I', 'J'),
+			'KQ' => array('K', 'L', 'M', 'N', 'O', 'P', 'Q'),
+			'PT' => array('P', 'Q', 'R', 'S', 'T'),
+			'UX' => array('U', 'V', 'W', 'X'),
+			'YA' => array('Y', 'Z', 'A'),
+		);
 	}
 }

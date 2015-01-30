@@ -7,9 +7,9 @@ Template Name: Books
 <?php get_header(); ?>
 <?php 
 
-$filter = new Filter($_GET);
-$posts = $filter->getPosts();
-
+$filter     = new Filter($_GET);
+$posts      = $filter->getPosts();
+$pagination = $filter->getPagination(); 
 ?>
 
 <?php $a=1; foreach ($posts as $p):  ?>
@@ -46,7 +46,9 @@ if ( has_post_thumbnail($p->ID) )
 <?php $a++; endforeach;?>
 
 <div class="clear"></div>
-<?php if(function_exists('wp_paginate')) { wp_paginate(); } ?>
+<?php 
+echo $pagination;
+?>
 
 	
 <?php get_template_part( 'sidebar', '' ); ?>

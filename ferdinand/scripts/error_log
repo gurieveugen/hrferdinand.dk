@@ -1,2 +1,6 @@
 [29-Jan-2015 11:51:36 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 10392 bytes) in /home/miydim3/public_html/wp7/wp-content/themes/ferdinand/scripts/timthumb.php on line 1039
 [29-Jan-2015 11:51:37 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 10392 bytes) in /home/miydim3/public_html/wp7/wp-content/themes/ferdinand/scripts/timthumb.php on line 1039
+[30-Jan-2015 07:23:26 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 11812 bytes) in /home/miydim3/public_html/wp7/wp-content/themes/ferdinand/scripts/timthumb.php on line 1039
+[30-Jan-2015 07:23:34 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 11812 bytes) in /home/miydim3/public_html/wp7/wp-content/themes/ferdinand/scripts/timthumb.php on line 1039
+[30-Jan-2015 07:23:41 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 11812 bytes) in /home/miydim3/public_html/wp7/wp-content/themes/ferdinand/scripts/timthumb.php on line 1039
+[30-Jan-2015 07:24:11 UTC] PHP Fatal error:  Allowed memory size of 33554432 bytes exhausted (tried to allocate 11812 bytes) in /home/miydim3/public_html/wp7/wp-content/themes/ferdinand/scripts/timthumb.php on line 1039
