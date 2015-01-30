@@ -42,6 +42,7 @@ class Search{
 			foreach ($posts as $p) 
 			{
 				$p->image = (string) self::getThumbnailURL($p->ID);
+				$p->image = get_image_path($p->image);
 				if(strlen(trim($p->image)))
 				{
 					$p->image = sprintf('%s/scripts/timthumb.php?src=%s&w=60&h=60', get_bloginfo('stylesheet_directory'), $p->image);

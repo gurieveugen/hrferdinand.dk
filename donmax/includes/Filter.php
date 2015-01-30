@@ -26,10 +26,13 @@ class Filter{
 		$this->letters = $this->getLetters($response['letters']);
 
 		$this->query = array(
-			'SELECT'   => sprintf('SELECT SQL_CALC_FOUND_ROWS * FROM wp_posts'),
-			'WHERE'    => 'WHERE 1=1 AND ( wp_posts.ID NOT IN (SELECT object_id FROM wp_term_relationships WHERE term_taxonomy_id IN (12) ) ) AND wp_posts.post_type = \'boger\' AND (wp_posts.post_status = \'publish\')',
+			'SELECT'   => sprintf('SELECT SQL_CALC_FOUND_ROWS * FROM %s', $this->db->posts),
+			'WHERE'    => sprintf(
+				'WHERE 1=1 AND %1$s.post_type = \'boger\' AND (%1$s.post_status = \'publish\' OR %1$s.post_status = \'private\')', 
+				$this->db->posts, 
+				$this->db->prefix
+			),
 			'LIKE'     => '',
-			'GROUP_BY' => 'GROUP BY wp_posts.ID',
 			'ORDER_BY' => $this->getOrderBy()
 		);
 	}	
@@ -37,7 +40,7 @@ class Filter{
 	public function getOrderBy()
 	{
 		$offset = ($this->getPage()-1)*(int) get_option('posts_per_page');
-		return sprintf('ORDER BY wp_posts.post_title ASC LIMIT %d, 5', $offset);
+		return sprintf('ORDER BY %s.post_title ASC LIMIT %d, 5', $this->db->posts, $offset);
 	}
 
 	public function getPosts()
@@ -67,7 +70,10 @@ class Filter{
 
 	public function getTotal()
 	{
-		$total = ceil((int) $this->getCount()/ (int) get_option('posts_per_page' ));
+		
+		$count          = (int) $this->getCount();
+		$posts_per_page = 5;
+		$total          = ceil($count/$posts_per_page);
 		return max(1, $total);
 	}
 
