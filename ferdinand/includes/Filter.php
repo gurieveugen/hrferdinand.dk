@@ -25,23 +25,72 @@ class Filter{
 		$response = array_merge(array('letters' => ''), $response);
 		$this->letters = $this->getLetters($response['letters']);
 
+		$this->where[] = '1=1';
+		$this->where[] = sprintf('%1$s.post_type = \'boger\'', $this->db->posts);
+		$this->where[] = sprintf('(%1$s.post_status = \'publish\' OR %1$s.post_status = \'private\')', $this->db->posts);
+
 		$this->query = array(
-			'SELECT'   => sprintf('SELECT SQL_CALC_FOUND_ROWS * FROM %s', $this->db->posts),
-			'WHERE'    => sprintf(
-				'WHERE 1=1 AND ( %1$s.ID NOT IN (SELECT object_id FROM %2$sterm_relationships WHERE term_taxonomy_id IN (12) ) ) AND %1$s.post_type = \'boger\' AND (%1$s.post_status = \'publish\')', 
-				$this->db->posts, 
-				$this->db->prefix
-			),
-			'LIKE'     => '',
-			'GROUP_BY' => sprintf('GROUP BY %s.ID', $this->db->posts),
-			'ORDER_BY' => $this->getOrderBy()
+			'SELECT'     => sprintf('SQL_CALC_FOUND_ROWS * FROM %s', $this->db->posts),
+			'INNER JOIN' => $this->getInnerJoin(),
+			'WHERE'      => $this->getWhere(),
+			'GROUP BY'   => $this->getGroupBy(),
+			'ORDER BY'   => $this->getOrderBy(),
+			'LIMIT'      => $this->getLimit()
 		);
 	}	
 
+	public function getGroupBy()
+	{
+		return sprintf('%s.ID', $this->db->posts);
+	}
+
+	public function getWhere()
+	{
+		$where   = array('1=1');
+		$where[] = sprintf('%1$s.post_type = \'boger\'', $this->db->posts);
+		$where[] = sprintf('(%1$s.post_status = \'publish\' OR %1$s.post_status = \'private\')', $this->db->posts);
+		$where[] = sprintf('( %1$s.ID NOT IN (SELECT object_id FROM %2$sterm_relationships WHERE term_taxonomy_id IN (12) ) )', $this->db->posts, $this->db->prefix);
+
+		if(count($this->letters))
+		{
+			foreach ($this->letters as $l) 
+			{
+				$like[] = $this->db->posts.'.post_title LIKE \''.$l.'%\'';
+			}
+			$where[] = sprintf('(%s)', implode(' OR ', $like));
+		}
+
+		if(is_category())
+		{
+			$qo = get_queried_object();
+			$where[] = sprintf(
+				'( %s.term_taxonomy_id IN (%d) )', 
+				$this->db->term_relationships, 
+				$qo->term_id
+			);
+		}
+
+		return implode(' AND ', $where);
+	}
+
+	public function getInnerJoin()
+	{
+		if(is_category())
+		{
+			return sprintf('%1$s ON (%2$s.ID = %1$s.object_id)', $this->db->term_relationships, $this->db->posts);
+		}
+		return '';
+	}
+
 	public function getOrderBy()
 	{
-		$offset = ($this->getPage()-1)*(int) get_option('posts_per_page');
-		return sprintf('ORDER BY %s.post_title ASC LIMIT %d, 5', $this->db->posts, $offset);
+		return sprintf('%s.post_title ASC', $this->db->posts);
+	}
+
+	public function getLimit()
+	{
+		$offset = ($this->getPage()-1)*5;
+		return sprintf('%d, 5', $offset);
 	}
 
 	public function getPosts()
@@ -71,21 +120,25 @@ class Filter{
 
 	public function getTotal()
 	{
-		$total = ceil((int) $this->getCount()/ (int) get_option('posts_per_page' ));
+		
+		$count          = (int) $this->getCount();
+		$posts_per_page = 5;
+		$total          = ceil($count/$posts_per_page);
 		return max(1, $total);
 	}
 
 	public function getQueryString()
 	{
-		if(count($this->letters))
+		$query = '';
+		foreach ($this->query as $key => $value) 
 		{
-			foreach ($this->letters as $l) 
+			if(strlen(trim($value)))
 			{
-				$like[] = $this->db->posts.'.post_title LIKE \''.$l.'%\'';
+				$query.= sprintf(' %s %s', $key, $value);
 			}
-			$this->query['LIKE'] = sprintf('AND (%s)', implode(' OR ', $like));
 		}
-		return implode(' ', $this->query);
+
+		return $query;
 	}
 
 	/**

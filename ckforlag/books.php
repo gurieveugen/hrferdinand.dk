@@ -11,7 +11,6 @@ $filter     = new Filter($_GET);
 $posts      = $filter->getPosts();
 $pagination = $filter->getPagination(); 
 ?>
-
 <?php $a=1; foreach ($posts as $p):  ?>
 	<div class="item <?php if ( $a == 2 ) { echo ' alt'; $a=0; } ?>">
 	

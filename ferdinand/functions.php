@@ -317,6 +317,19 @@ function addScriptsAndStyles()
     wp_localize_script('main', 'defaults', array('ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 }
 
+function get_image_path ($img_url) {
+
+    $theImageSrc =  $img_url;
+    global $blog_id;
+    if (isset($blog_id) && $blog_id > 0) {
+        $imageParts = explode('/files/', $img_url);
+        if (isset($imageParts[1])) {
+            $theImageSrc = '/blogs.dir/' . $blog_id . '/files/' . $imageParts[1];
+        }
+    }
+    return $theImageSrc;
+}
+
 require_once 'includes/Search.php';
 require_once 'includes/Filter.php';
 

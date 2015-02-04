@@ -95,6 +95,7 @@ if($rows[$i]['image'] != "")
 <?php if ( is_404() ){ ?>
 		<h2>Not Found</h2>
 		<?php } ?>
+		<?php if(!is_search()): ?>
 		<ul class="filter-cat">
 			<li>Vis titler:</li>
 			<li>
@@ -116,6 +117,7 @@ if($rows[$i]['image'] != "")
 				<a href="<?php echo add_query_arg('letters', 'YA'); ?>">Y - A</a>
 			</li>
 		</ul>
+		<?php endif; ?>
 	</div>
 </div>
 	<?php } ?>
